@@ -1,5 +1,6 @@
 package com.tdtu.student_management_system.user.entity;
 
+import com.tdtu.student_management_system.classes.entity.Class;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

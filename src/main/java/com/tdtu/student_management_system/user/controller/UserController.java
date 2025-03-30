@@ -109,7 +109,7 @@ public class UserController {
 
     //Lấy user theo role và userId
     @GetMapping("/role/{role}/userId/{userId}")
-    public ResponseEntity<?> getUserByRoleAndUserId(@PathVariable User.Role role, String userId){
+    public ResponseEntity<?> getUserByRoleAndUserId(@PathVariable User.Role role, @PathVariable String userId){
         try{
             User user = userService.getUserByRoleAndUserId(role, userId);
             return ResponseEntity.ok(user);
