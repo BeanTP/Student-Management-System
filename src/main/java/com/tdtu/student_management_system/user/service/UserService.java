@@ -52,7 +52,13 @@ public class UserService {
         user.setPhoneNum(userDTO.getPhoneNum());
         user.setDepartmentCode(userDTO.getDepartmentCode());
         user.setYearOfAdmission(userDTO.getYearOfAdmission());
-        user.setRole(User.Role.TEMP);
+
+        if(userDTO.getRole() == null){
+            user.setRole(User.Role.TEMP);
+        } else {
+            user.setRole(userDTO.getRole());
+        }
+
 
         String encodedPassword = passwordEncoder.encode(userDTO.getCccd());
         user.setPassword(encodedPassword);
@@ -90,6 +96,16 @@ public class UserService {
         } else {
             throw new RuntimeException("User not found with userId: " + userId);
         }
+    }
+
+    public void changePassword(String userName, String currPass, String newPass){
+        User user = userRepository.findByUserId(userName)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if(!passwordEncoder.matches(currPass, user.getPassword()))
+            throw new RuntimeException("Current password is incorrect!");
+
+        user.setPassword(passwordEncoder.encode(newPass));
+        userRepository.save(user);
     }
 
     public void deleteUser(String userId){

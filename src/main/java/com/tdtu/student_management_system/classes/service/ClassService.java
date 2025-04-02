@@ -50,7 +50,7 @@ public class ClassService {
             List<String> students = currClass.getStudents();
             for(String studentId : classDTO.getStudents()){
                 User student = userRepository.findByUserId(studentId)
-                        .orElseThrow(() -> new RuntimeException("Student ID: " + studentId + "not founnd!"));
+                        .orElseThrow(() -> new RuntimeException("Student ID: " + studentId + "not found!"));
                 if(!students.contains(student.getUserId()))
                     students.add(student.getUserId());
             }
@@ -59,6 +59,42 @@ public class ClassService {
             return classRepository.save(currClass);
         } else {
             throw new RuntimeException("Class not found with id: " + classId);
+        }
+    }
+
+    public Class updateTeacher(long classId, String teacherId){
+        Class exitingClass = classRepository.findById(classId)
+                .orElseThrow(() -> new RuntimeException("Class not found with id: " + classId));
+
+        Optional<User> teacher = userRepository.findByRoleAndUserId(User.Role.TEACHER, teacherId);
+        if(teacher.isEmpty())
+            throw new RuntimeException("Teacher with id: " + teacherId + " not found or is not a TEACHER!");
+        exitingClass.setTeacherId(teacherId);
+        return classRepository.save(exitingClass);
+    }
+
+    public Class delStudentFromClass(long classId, ClassDTO classDTO){
+        Class currClass = classRepository.findById(classId)
+                .orElseThrow(() -> new RuntimeException("Class not found with id: " + classId));
+
+        List<String> students = currClass.getStudents();
+        boolean modified = false;
+
+        for(String studentId : classDTO.getStudents()){
+            User student = userRepository.findByUserId(studentId)
+                    .orElseThrow(() -> new RuntimeException("Student ID: " + studentId + "not found!"));
+
+            if(students.contains(student.getUserId())){
+                students.remove(student.getUserId());
+                modified = true;
+            }
+        }
+
+        if(modified){
+            currClass.setStudents(students);
+            return classRepository.save(currClass);
+        } else {
+            throw new RuntimeException("No matching students found in class.");
         }
     }
 

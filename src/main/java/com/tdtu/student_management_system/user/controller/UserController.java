@@ -1,5 +1,6 @@
 package com.tdtu.student_management_system.user.controller;
 
+import com.tdtu.student_management_system.user.dto.ChangePasswordRequest;
 import com.tdtu.student_management_system.user.dto.LoginDTO;
 import com.tdtu.student_management_system.user.dto.UserDTO;
 import com.tdtu.student_management_system.user.entity.User;
@@ -55,6 +56,18 @@ public class UserController {
             return new ResponseEntity<>(updateUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User not found!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        try{
+            userService.changePassword(userId, request.getCurrPass(), request.getNewPass());
+            return ResponseEntity.ok("Password changed successfully.");
+        }catch(RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

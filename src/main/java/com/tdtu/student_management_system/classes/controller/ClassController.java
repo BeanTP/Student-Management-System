@@ -60,4 +60,26 @@ public class ClassController {
             return new ResponseEntity<>("Add students to class fail!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{classId}/teacher/{teacherId}")
+    public ResponseEntity<?> updateTeacher(@PathVariable long classId, @PathVariable String teacherId){
+        try{
+            Class updatedClass = classService.updateTeacher(classId, teacherId);
+            return ResponseEntity.ok(updatedClass);
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{classId}/students/remove")
+    public ResponseEntity<?> delStudentsFromClass(@PathVariable long classId, @RequestBody ClassDTO classDTO){
+        try{
+            Class updatedClass = classService.delStudentFromClass(classId, classDTO);
+            return ResponseEntity.ok("Students removed successfully from class " + classId);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
