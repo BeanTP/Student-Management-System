@@ -22,12 +22,26 @@ public class CourseOfferingController {
     @Autowired
     private UserRepository userRepository;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create-course/{subjectId}")
     public ResponseEntity<CourseOffering> createCourse(@PathVariable long subjectId, @RequestBody CourseOfferingDTO courseOfferingDTO){
         try{
             CourseOffering createdCourse = courseOfferingService.createCourse(subjectId, courseOfferingDTO);
             return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+        }catch(Exception e){
+            System.err.println(e.toString());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/assign-course/{subjectId}")
+    public ResponseEntity<CourseOffering> assignTeacherCourse(@PathVariable long subjectId, @RequestBody CourseOfferingDTO courseOfferingDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        try{
+            CourseOffering registered = courseOfferingService.assignTeacher(subjectId, userId, courseOfferingDTO);
+            return new ResponseEntity<>(registered, HttpStatus.CREATED);
         }catch(Exception e){
             System.err.println(e.toString());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -44,6 +58,28 @@ public class CourseOfferingController {
             return new ResponseEntity<>(registered, HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update-course/{courseOfferingId}")
+    public ResponseEntity<?> updateCourse(@PathVariable long courseOfferingId, @RequestBody CourseOfferingDTO courseOfferingDTO){
+        CourseOffering updatedCourse = courseOfferingService.updateCourse(courseOfferingId, courseOfferingDTO);
+        if(updatedCourse != null){
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Failed update!", HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/remove-students/{courseOfferingId}")
+    public ResponseEntity<String> removeStudentFromCourse(@PathVariable long courseOfferingId, @RequestBody CourseOfferingDTO courseOfferingDTO){
+        try {
+            courseOfferingService.removeStudentFromCourse(courseOfferingId, courseOfferingDTO.getStudents());
+            return ResponseEntity.ok("Students removed from course successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
