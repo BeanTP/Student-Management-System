@@ -13,6 +13,10 @@ public class CourseOffering {
     private long id;
     private String semester;
 
+    private String groupCourse;
+    private int shift;
+    private String dayOfWeek;
+
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
@@ -27,11 +31,11 @@ public class CourseOffering {
     inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<User> students;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,5 +69,29 @@ public class CourseOffering {
 
     public void setStudents(List<User> students) {
         this.students = students;
+    }
+
+    public String getGroupCourse() {
+        return groupCourse;
+    }
+
+    public void setGroupCourse(String groupCourse) {
+        this.groupCourse = groupCourse;
+    }
+
+    public int getShift() {
+        return shift;
+    }
+
+    public void setShift(int shift) {
+        this.shift = shift;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }

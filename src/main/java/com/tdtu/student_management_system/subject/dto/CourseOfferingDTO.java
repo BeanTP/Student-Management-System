@@ -6,6 +6,10 @@ public class CourseOfferingDTO {
     private long id;
     private String teacherId;
     private String semester;
+
+    private String groupCourse;
+    private int shift;
+    private String dayOfWeek;
     private List<String> students;
 
     public long getId() {
@@ -38,5 +42,29 @@ public class CourseOfferingDTO {
 
     public void setStudents(List<String> students) {
         this.students = students;
+    }
+
+    public String getGroupCourse() {
+        return groupCourse;
+    }
+
+    public void setGroupCourse(String groupCourse) {
+        this.groupCourse = groupCourse;
+    }
+
+    public int getShift() {
+        return shift;
+    }
+
+    public void setShift(int shift) {
+        this.shift = shift;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }

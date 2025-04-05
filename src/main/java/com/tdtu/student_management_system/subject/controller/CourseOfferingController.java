@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/subjects")
@@ -18,7 +22,7 @@ public class CourseOfferingController {
     @Autowired
     private UserRepository userRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     @PostMapping("/create-course/{subjectId}")
     public ResponseEntity<CourseOffering> createCourse(@PathVariable long subjectId, @RequestBody CourseOfferingDTO courseOfferingDTO){
         try{
@@ -27,6 +31,33 @@ public class CourseOfferingController {
         }catch(Exception e){
             System.err.println(e.toString());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @PutMapping("/register-course/{courseOfferingId}")
+    public ResponseEntity<CourseOffering> registerStudentToCourse(@PathVariable long courseOfferingId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        try{
+            CourseOffering registered = courseOfferingService.registerStudentToCourse(courseOfferingId, userId);
+            return new ResponseEntity<>(registered, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/course")
+    public List<CourseOffering> getAllCourse(){return courseOfferingService.getAllCourseOffering();}
+
+    @GetMapping("/course/{semester}")
+    public ResponseEntity<?> getCourseBySemester(@PathVariable String semester){
+        try{
+            List<CourseOffering> course = courseOfferingService.getCourseBySemester(semester);
+            return ResponseEntity.ok(course);
+        } catch(RuntimeException e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
 }
