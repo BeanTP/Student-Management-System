@@ -16,7 +16,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String userId; //Mã id sinh tự động
+    private String userId;
     private String fullName;
     private LocalDate doBirth;
     private String email;
