@@ -33,11 +33,18 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/register", "/users/login", "/home").permitAll()
-                        .requestMatchers("/users/change-password").authenticated()
+                        .requestMatchers("/users/login", "/home", "/assets/**", "/forgot-password").permitAll()
+                        .requestMatchers("/users/change-password", "/users/me").authenticated()
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }

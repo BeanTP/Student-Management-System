@@ -98,6 +98,27 @@ public class UserController {
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable String userId){return userService.getUserById(userId);}
 
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId = auth.getName();
+
+        User currUser = getUserById(currUserId);
+
+        UserDTO dto = new UserDTO();
+        dto.setUserId(currUser.getUserId());
+        dto.setFullName(currUser.getFullName());
+        dto.setRole(currUser.getRole());
+        dto.setCccd(currUser.getCccd());
+        dto.setEmail(currUser.getEmail());
+        dto.setDepartmentCode(currUser.getDepartmentCode());
+        dto.setDoBirth(currUser.getDoBirth());
+        dto.setYearOfAdmission(currUser.getYearOfAdmission());
+        dto.setPhoneNum(currUser.getPhoneNum());
+
+        return ResponseEntity.ok(dto);
+    }
+
     //Lấy dsach user theo departmentCode
     @GetMapping("/department/{departmentCode}")
     public ResponseEntity<?> getUsersByDepartmentCode(@PathVariable int departmentCode){
