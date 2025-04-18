@@ -118,4 +118,6 @@ public class CourseOfferingService {
             throw new RuntimeException("There are no courses open this semester! Please wait for the earliest announcement.");
         return currCourseOfSemester;
     }
+
+
 }

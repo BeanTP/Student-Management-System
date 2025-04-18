@@ -58,4 +58,9 @@ public class ExamScheduleController {
     public ResponseEntity<List<ExamSchedule>> getByCourse(@PathVariable Long courseOfferingId) {
         return ResponseEntity.ok(examScheduleService.getSchedulesByCourseOffering(courseOfferingId));
     }
+    @GetMapping("/all")
+    public List<ExamSchedule> getAllSchedules() {
+        return examScheduleService.getAllSchedules();
+    }
+
 }

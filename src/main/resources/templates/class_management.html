@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      class="light-style layout-menu-fixed"
+      dir="ltr"
+      data-theme="theme-default"
+      th:data-assets-path="@{/assets/}"
+      data-template="vertical-menu-template-free">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Schedule - Student Management System</title>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/core.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/theme-default.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container label {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .form-container input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-container input:focus {
+            border-color: #4e73df;
+            outline: none;
+        }
+
+        .form-container button {
+            padding: 12px;
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #3b5b99;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f4f7fc;
+            color: #333;
+            font-weight: bold;
+        }
+
+        table tbody tr:hover {
+            background-color: #f0f8ff;
+        }
+
+        .alert {
+            padding: 10px;
+            color: white;
+            background-color: #f44336;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .alert-info {
+            background-color: #2196F3;
+        }
+
+        .alert-warning {
+            background-color: #ff9800;
+        }
+    </style>
+
+    <!-- Helpers -->
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+    <script th:src="@{/assets/js/config.js}"></script>
+</head>
+
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+        <!-- Menu (Sidebar) -->
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+                <a th:href="@{/home}" class="app-brand-link">
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2">SMS</span>
+                </a>
+            </div>
+
+            <div class="menu-inner-shadow"></div>
+
+            <ul class="menu-inner py-1">
+                <!-- Dashboard -->
+                <li class="menu-item">
+                    <a th:href="@{/home}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <div data-i18n="Dashboard">Dashboard</div>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+                <div class="navbar-nav-center d-flex align-items-center ms-auto me-auto">
+                    <h2 class="fw-bold mb-0 text-nowrap">Quản lý lớp học</h2>
+                </div>
+            </nav>
+            <!-- / Navbar -->
+
+            <!-- Content -->
+            <!-- Content -->
+            <div class="container my-5">
+                <!-- Header Section -->
+
+                <!-- Create Class Form -->
+                <div id="create-class" class="form-container mb-4">
+                    <h3>Create Class</h3>
+                    <form id="create-class-form">
+                        <div class="mb-3">
+                            <label for="class-name" class="form-label">Class Name:</label>
+                            <input type="text" class="form-control" id="class-name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="department-code" class="form-label">Department Code:</label>
+                            <input type="number" class="form-control" id="department-code" required />
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100">Create Class</button>
+                    </form>
+                </div>
+
+                <hr>
+                <!-- View All Classes -->
+                <div id="view-classes" class="form-container mb-4">
+                    <h3>View All Classes</h3>
+                    <button class="btn btn-custom" id="load-classes">Load Classes</button>
+                    <table class="table mt-3" id="classes-table" style="display: none;">
+                        <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Department Code</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="classes-list"></tbody>
+                    </table>
+                </div>
+
+                <hr>
+
+                <!-- Class Details Section -->
+                <div id="class-details" class="form-container mb-4">
+                    <h3>Class Details</h3>
+                    <div class="mb-3">
+                        <label for="class-id" class="form-label">Class ID:</label>
+                        <input type="number" class="form-control" id="class-id" />
+                    </div>
+                    <button id="load-class-details" class="btn btn-custom w-100">Load Class Details</button>
+                    <div id="class-detail-container" class="mt-3" style="display: none;">
+                        <h4>Teacher:</h4>
+                        <p id="teacher-info"></p>
+                        <h4>Students:</h4>
+                        <ul id="students-list"></ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Axios JS for API Calls -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+            <script>
+                const baseUrl = '/classes';
+
+                // Tạo lớp học
+                $('#create-class-form').on('submit', function(e) {
+                    e.preventDefault();
+                    const className = $('#class-name').val();
+                    const departmentCode = $('#department-code').val();
+                    const classData = { name: className, departmentCode: departmentCode };
+
+                    axios.post(baseUrl, classData)
+                        .then(response => {
+                            alert('Class created successfully!');
+                            $('#create-class-form')[0].reset();
+                        })
+                        .catch(error => {
+                            console.error('Error creating class:', error);
+                            alert('Failed to create class');
+                        });
+                });
+
+                // Load tất cả lớp học
+                $('#load-classes').on('click', function() {
+                    axios.get(baseUrl)
+                        .then(response => {
+                            const classes = response.data;
+                            $('#classes-list').empty();
+                            classes.forEach(classItem => {
+                                $('#classes-list').append(`
+                                    <tr>
+                                        <td>${classItem.name}</td>
+                                        <td>${classItem.departmentCode}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" onclick="viewClassDetails(${classItem.id})">View Details</button>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                            $('#classes-table').show();
+                        })
+                        .catch(error => {
+                            console.error('Error loading classes:', error);
+                            alert('Failed to load classes');
+                        });
+                });
+
+                // Xem chi tiết lớp học
+                function viewClassDetails(classId) {
+                    axios.get(`${baseUrl}/${classId}`)
+                        .then(response => {
+                            const classDetails = response.data;
+                            $('#class-detail-container').show();
+                            $('#teacher-info').text(classDetails.teacher ? classDetails.teacher.name : 'No teacher assigned');
+                            $('#students-list').empty();
+                            classDetails.students.forEach(student => {
+                                $('#students-list').append(`<li>${student.name}</li>`);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching class details:', error);
+                            alert('Failed to load class details');
+                        });
+                }
+
+                // Load chi tiết lớp học
+                $('#load-class-details').on('click', function() {
+                    const classId = $('#class-id').val();
+                    if (classId) {
+                        viewClassDetails(classId);
+                    } else {
+                        alert('Please enter a valid class ID');
+                    }
+                });
+            </script>
+
+        <!-- / Content -->
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

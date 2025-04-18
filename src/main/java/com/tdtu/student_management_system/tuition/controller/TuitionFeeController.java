@@ -1,6 +1,7 @@
 package com.tdtu.student_management_system.tuition.controller;
 
 import com.tdtu.student_management_system.tuition.dto.TuitionFeeDTO;
+import com.tdtu.student_management_system.tuition.entity.TuitionFee;
 import com.tdtu.student_management_system.tuition.service.TuitionFeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -27,6 +27,16 @@ public class TuitionFeeController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/admin/{semester}")
+    public ResponseEntity<List<TuitionFee>> getTuitionFeesBySemester(@PathVariable String semester) {
+        List<TuitionFee> tuitionFees = tuitionFeeService.getTuitionFeesBySemester(semester);
+
+        if (tuitionFees.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(tuitionFees);
+    }
     @GetMapping("/student")
     public ResponseEntity<?> getStudentTuitionFee(Authentication authentication){
         String studentId = authentication.getName();

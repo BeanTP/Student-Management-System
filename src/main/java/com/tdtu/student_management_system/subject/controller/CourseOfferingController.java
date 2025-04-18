@@ -96,4 +96,5 @@ public class CourseOfferingController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
+
 }
