@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" th:data-assets-path="@{/assets/}" data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Schedule - Student Management System</title>
+  <meta name="description" content="Student Management System" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/css/core.css}" />
+  <link rel="stylesheet" th:href="@{/assets/vendor/css/theme-default.css}" />
+  <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+
+  <!-- Helpers -->
+  <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+  <script th:src="@{/assets/js/config.js}"></script>
+
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    .card-header {
+      font-weight: bold;
+    }
+
+    .btn {
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-weight: 600;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+
+    .btn-warning {
+      background-color: #ffc107;
+      border: none;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border-radius: 5px;
+      padding: 0.75rem;
+    }
+
+    .card-body {
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin-top: 50px;
+    }
+
+    .navbar-nav-center {
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <!-- Menu (Sidebar) -->
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <div class="app-brand demo">
+        <a th:href="@{/home}" class="app-brand-link">
+          <span class="app-brand-text demo menu-text fw-bolder ms-2">SMS</span>
+        </a>
+      </div>
+
+      <div class="menu-inner-shadow"></div>
+
+      <ul class="menu-inner py-1">
+        <li class="menu-item">
+          <a th:href="@{/home}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Dashboard">Dashboard</div>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <!-- / Menu -->
+
+    <div class="layout-page">
+      <!-- Navbar -->
+      <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+          <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
+          </a>
+        </div>
+        <div class="navbar-nav-center d-flex align-items-center ms-auto me-auto">
+          <h2 class="fw-bold mb-0 text-nowrap">Quản lý học phí sinh viên
+          </h2>
+        </div>
+      </nav>
+      <!-- / Navbar -->
+
+      <!-- Content -->
+
+      <div class="container mt-5">
+        <!-- Dropdown chọn học kỳ -->
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <label for="semesterSelect">Chọn học kỳ:</label>
+            <select class="form-select" id="semesterSelect">
+              <option value="HK2-2025">HK2-2025</option>
+              <option value="HK1-2025">HK1-2025</option>
+              <option value="HK2-2024">HK2-2024</option>
+              <!-- Thêm các học kỳ khác nếu cần -->
+            </select>
+          </div>
+        </div>
+
+
+        <!-- Bảng học phí -->
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <table class="table table-bordered" id="admin-tuition-fee-table">
+              <thead>
+              <tr>
+                <th>Mã sinh viên</th>
+                <th>Học kỳ</th>
+                <th>Tổng tín chỉ</th>
+                <th>Số tiền phải đóng</th>
+                <th>Trạng thái thanh toán</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!-- Nội dung bảng sẽ được điền động qua JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <script>
+        // Hàm lấy dữ liệu học phí từ API và hiển thị vào bảng
+        async function getTuitionData() {
+          const semester = document.getElementById("semesterSelect").value;
+          const tuitionTableBody = document.getElementById("admin-tuition-fee-table").getElementsByTagName('tbody')[0];
+
+          // Xóa dữ liệu cũ trong bảng
+          tuitionTableBody.innerHTML = '';
+
+          try {
+            // Gửi yêu cầu API để lấy dữ liệu học phí
+            const response = await fetch(`/sms/tuition/admin/${semester}`, {
+              method: 'GET',
+            });
+
+            // Kiểm tra nếu phản hồi không thành công
+            if (!response.ok) {
+              throw new Error(`Lỗi phản hồi từ server: ${response.status} - ${response.statusText}`);
+            }
+
+            // Phân tích phản hồi JSON
+            const data = await response.json();
+
+            // Kiểm tra nếu không có dữ liệu
+            if (data.length === 0) {
+              alert("Không có dữ liệu học phí cho học kỳ này.");
+              return;
+            }
+
+            // Duyệt qua dữ liệu và thêm vào bảng
+            data.forEach(TuitionFee => {
+              const row = tuitionTableBody.insertRow();  // Thêm một dòng mới vào bảng
+
+              // Thêm dữ liệu vào các ô của dòng
+              row.insertCell(0).textContent = TuitionFee.studentId;  // Mã sinh viên
+              row.insertCell(1).textContent = TuitionFee.semester;  // Học kỳ
+              row.insertCell(2).textContent = TuitionFee.totalCredit;  // Tổng tín chỉ
+              row.insertCell(3).textContent = TuitionFee.amount.toLocaleString('vi-VN') + ' VND';  // Số tiền phải đóng
+              row.insertCell(4).textContent = TuitionFee.pair ? "Đã đóng" : "Chưa đóng";  // Trạng thái thanh toán
+            });
+
+          } catch (error) {
+            console.error('Lỗi khi lấy dữ liệu học phí:', error);
+
+            // Hiển thị thông báo lỗi chi tiết hơn
+            alert(`Đã xảy ra lỗi khi tải dữ liệu học phí: ${error.message}`);
+          }
+        }
+
+
+
+        // Gọi hàm khi trang được tải và khi người dùng thay đổi học kỳ
+        window.onload = function() {
+          getTuitionData();  // Tự động gọi hàm khi trang được tải
+        };
+
+        // Gọi hàm khi thay đổi học kỳ trong dropdown
+        document.getElementById("semesterSelect").addEventListener("change", function() {
+          getTuitionData();  // Gọi lại hàm khi chọn học kỳ khác
+        });
+      </script>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

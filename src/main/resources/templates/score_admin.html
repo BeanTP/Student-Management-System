@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" th:data-assets-path="@{/assets/}" data-template="vertical-menu-template-free">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Schedule - Student Management System</title>
+    <meta name="description" content="Student Management System" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/img/favicon/favicon.ico}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/fonts/boxicons.css}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/core.css}" />
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/theme-default.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+
+    <!-- Helpers -->
+    <script th:src="@{/assets/vendor/js/helpers.js}"></script>
+    <script th:src="@{/assets/js/config.js}"></script>
+
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .card-header {
+            font-weight: bold;
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-weight: 600;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 0.75rem;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+        }
+
+        .navbar-nav-center {
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu (Sidebar) -->
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+                <a th:href="@{/home}" class="app-brand-link">
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2">SMS</span>
+                </a>
+            </div>
+
+            <div class="menu-inner-shadow"></div>
+
+            <ul class="menu-inner py-1">
+                <li class="menu-item">
+                    <a th:href="@{/home}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                        <div data-i18n="Dashboard">Dashboard</div>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <!-- / Menu -->
+
+        <div class="layout-page">
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+                <div class="navbar-nav-center d-flex align-items-center ms-auto me-auto">
+                    <h2 class="fw-bold mb-0 text-nowrap">Quản lý điểm sinh viên
+                    </h2>
+                </div>
+            </nav>
+            <!-- / Navbar -->
+
+            <!-- Content -->
+            <form id="scoreForm" class="row g-3">
+                <div class="col-md-4">
+                    <label for="studentId" class="form-label">Mã sinh viên</label>
+                    <input type="text" class="form-control" id="studentId" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="courseOfferingId" class="form-label">Course Offering ID</label>
+                    <input type="number" class="form-control" id="courseOfferingId" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="process1" class="form-label">Process 1</label>
+                    <input type="number" step="0.1" class="form-control" id="process1" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="process2" class="form-label">Process 2</label>
+                    <input type="number" step="0.1" class="form-control" id="process2" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="midterm" class="form-label">Midterm</label>
+                    <input type="number" step="0.1" class="form-control" id="midterm" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="finalExam" class="form-label">Final</label>
+                    <input type="number" step="0.1" class="form-control" id="finalExam" required>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary">Lưu/Cập nhật điểm</button>
+                </div>
+            </form>
+
+            <hr>
+
+            <!-- Kết quả -->
+            <div class="mt-4">
+                <h4>Điểm vừa nhập</h4>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Process 1</th>
+                        <th>Process 2</th>
+                        <th>Midterm</th>
+                        <th>Final</th>
+                        <th>Trung bình</th>
+                    </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            const form = document.getElementById('scoreForm');
+            const resultTable = document.getElementById('resultTableBody');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const dto = {
+                    studentId: document.getElementById('studentId').value,
+                    courseOfferingId: parseFloat(document.getElementById('courseOfferingId').value),
+                    process1: parseFloat(document.getElementById('process1').value),
+                    process2: parseFloat(document.getElementById('process2').value),
+                    midterm: parseFloat(document.getElementById('midterm').value),
+                    finalExam: parseFloat(document.getElementById('finalExam').value)
+                };
+
+                fetch('/sms/scores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dto)
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Lỗi từ server");
+                        return res.json();
+                    })
+                    .then(data => {
+                        const avg = ((dto.process1 + dto.process2 + dto.midterm + dto.finalExam) / 4).toFixed(2);
+                        resultTable.innerHTML = `
+                <tr>
+                    <td>${dto.process1}</td>
+                    <td>${dto.process2}</td>
+                    <td>${dto.midterm}</td>
+                    <td>${dto.finalExam}</td>
+                    <td><strong>${avg}</strong></td>
+                </tr>
+            `;
+                        alert("Cập nhật điểm thành công!");
+                    })
+                    .catch(err => {
+                        alert("Lỗi khi cập nhật điểm: " + err.message);
+                        console.error(err);
+                    });
+            });
+        </script>
+            <
+
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
