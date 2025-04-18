@@ -67,6 +67,7 @@ public class TuitionFeeService {
             dto.setSemester(fee.getSemester());
             dto.setTotalCredit(fee.getTotalCredit());
             dto.setAmount(fee.getAmount());
+            dto.setPair(fee.isPair());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -90,5 +91,19 @@ public class TuitionFeeService {
     public TuitionFee getTuitionByStudent(String studentId, String semester){
         return tuitionFeeRepository.findByStudentIdAndSemester(studentId, semester)
                 .orElseThrow(() -> new RuntimeException("Student don't have any course in this semester"));
+    }
+    public List<TuitionFeeDTO> getAllTuitionFees() {
+        List<TuitionFee> fees = tuitionFeeRepository.findAll();
+        return fees.stream().map(fee -> {
+            TuitionFeeDTO dto = new TuitionFeeDTO();
+            dto.setStudentId(fee.getStudentId());
+            dto.setSemester(fee.getSemester());
+            dto.setTotalCredit(fee.getTotalCredit());
+            dto.setAmount(fee.getAmount());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+    public List<TuitionFee> getTuitionFeesBySemester(String semester) {
+        return tuitionFeeRepository.findBySemester(semester);
     }
 }

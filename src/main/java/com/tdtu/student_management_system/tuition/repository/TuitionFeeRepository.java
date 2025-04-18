@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface TuitionFeeRepository extends JpaRepository<TuitionFee, Long> {
     List<TuitionFee> findByStudentId(String studentId);
     Optional<TuitionFee> findByStudentIdAndSemester(String studentId, String semester);
+    List<TuitionFee> findBySemester(String semester);
+
 }

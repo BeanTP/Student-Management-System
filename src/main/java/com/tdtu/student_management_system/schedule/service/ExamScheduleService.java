@@ -52,4 +52,8 @@ public class ExamScheduleService {
     public void deleteExam(Long id) {
         examScheduleRepository.deleteById(id);
     }
+    public List<ExamSchedule> getAllSchedules() {
+        return examScheduleRepository.findAll();
+    }
+
 }
