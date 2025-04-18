@@ -106,6 +106,7 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("alertType", "danger");
         }
         return "redirect:/users/all-user";
+
     }
 
 
