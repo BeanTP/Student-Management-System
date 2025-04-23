@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html th:replace="~{layout :: layout(~{::content}, 'Create User')}"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="content-wrapper">
+        <!-- Content -->
+
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card mb-4">
+                        <h5 class="card-header">Create User</h5>
+                        <hr class="my-0"/>
+                        <div class="card-body">
+                            <form id="registerNewUserForm">
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="fullName">Full Name</label>
+                                        <input
+                                                class="form-control"
+                                                id="fullName"
+                                                name="fullName"
+                                                required
+                                                type="text"
+                                        />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="role">Role</label>
+                                        <select class="form-control" id="role" name="role" required>
+                                            <option value="ADMIN">Admin</option>
+                                            <option value="STUDENT">Student</option>
+                                            <option value="TEACHER">Teacher</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="cccd">CCCD</label>
+                                        <input
+                                                class="form-control"
+                                                id="cccd"
+                                                name="cccd"
+                                                required
+                                                type="text"
+                                        />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="departmentCode">Department Code</label>
+                                        <select class="form-control" id="departmentCode" name="departmentCode"></select>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="doBirth">Day of Birth</label>
+                                        <input
+                                                class="form-control"
+                                                id="doBirth"
+                                                name="doBirth"
+                                                required
+                                                type="date"
+                                        />
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="phoneNum">Phone Number</label>
+                                        <div class="input-group input-group-merge">
+                                            <input
+                                                    class="form-control"
+                                                    id="phoneNum"
+                                                    name="phoneNum"
+                                                    required
+                                                    type="text"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="yearOfAdmission">Year Of Admission</label>
+                                        <select class="form-control" id="yearOfAdmission"
+                                                name="yearOfAdmission"></select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2">
+                                    <button class="btn btn-primary me-2" type="submit">Create</button>
+                                </div>
+                            </form>
+                            <p id="responseMessage" style="color: red;"></p>
+                        </div>
+                        <script>
+                            const departmentSelect = document.getElementById("departmentCode");
+                            const roleSelect = document.getElementById("role");
+
+                            function updateDepartmentOptions(role) {
+                              departmentSelect.innerHTML = "";
+                              if (role === "ADMIN") {
+                                const option = document.createElement("option");
+                                option.value = 0;
+                                option.textContent = "0 (Admin)";
+                                departmentSelect.appendChild(option);
+                                departmentSelect.disabled = true;
+                              } else {
+                                for (let i = 1; i <= 9; i++) {
+                                  const option = document.createElement("option");
+                                  option.value = i;
+                                  option.textContent = i;
+                                  departmentSelect.appendChild(option);
+                                }
+                                departmentSelect.disabled = false;
+                              }
+                            }
+
+                            roleSelect.addEventListener("change", function () {
+                              updateDepartmentOptions(this.value);
+                            });
+                            updateDepartmentOptions(roleSelect.value);
+
+                            const yearSelect = document.getElementById("yearOfAdmission");
+                            const currentYear = new Date().getFullYear();
+                            for (let year = currentYear; year >= 2000; year--) {
+                              const option = document.createElement("option");
+                              option.value = year;
+                              option.textContent = year;
+                              yearSelect.appendChild(option);
+                            }
+
+                            document.getElementById("registerNewUserForm").addEventListener("submit", function (e) {
+                              e.preventDefault();
+                              const formData = {
+                                fullName: document.getElementById("fullName").value,
+                                role: document.getElementById("role").value,
+                                cccd: document.getElementById("cccd").value,
+                                departmentCode: document.getElementById("departmentCode").value,
+                                doBirth: document.getElementById("doBirth").value,
+                                phoneNum: document.getElementById("phoneNum").value,
+                                yearOfAdmission: document.getElementById("yearOfAdmission").value
+                              };
+                              fetch("/sms/users/register", {
+                                method: "POST",
+                                headers: {
+                                  "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(formData)
+                              })
+                                .then(response => response.json())
+                                .then(data => {
+                                  const form = document.getElementById("registerNewUserForm");
+                                  document.getElementById("responseMessage").style.color = "green";
+                                  document.getElementById("responseMessage").textContent = "User created successfully!";
+                                  form.reset();
+                                })
+                                .catch(error => {
+                                  document.getElementById("responseMessage").style.color = "red";
+                                  document.getElementById("responseMessage").textContent = "Error creating user.";
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / Content -->
+
+        <div class="content-backdrop fade"></div>
+    </div>
+</div>
+</html>

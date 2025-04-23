@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::content}, 'Exam Schedule Management')}" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+
+            <h4 class="fw-bold py-3 mb-4">Exam Schedule Management</h4>
+
+            <div class="card">
+                <div class="card-body">
+                    <!-- Form thêm/cập nhật lịch thi -->
+                    <form id="formCreateExamSchedule" th:action="@{/exam-schedules}" method="post" th:object="${examScheduleDTO}">
+                        <input type="hidden" th:field="*{courseOfferingId}"/>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="courseId" class="form-label">Course Offering</label>
+                                <select id="courseId" class="form-control" th:field="*{courseOfferingId}">
+                                    <option th:each="co : ${courseOfferings}" th:value="${co.id}" th:text="${co.id}"></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="examDate" class="form-label">Exam Date</label>
+                                <input id="examDate" type="date" class="form-control" th:field="*{examDate}"/>
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label for="startTime" class="form-label">Start Time</label>
+                                <input id="startTime" type="time" class="form-control" th:field="*{startTime}"/>
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label for="endTime" class="form-label">End Time</label>
+                                <input id="endTime" type="time" class="form-control" th:field="*{endTime}"/>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="room" class="form-label">Room</label>
+                                <input id="room" type="text" class="form-control" th:field="*{room}"/>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p id="responseMessage" style="color: red;"></p>
+                </div>
+            </div>
+
+            <hr/>
+
+            <!-- Danh sách lịch thi -->
+            <div class="card mt-4">
+                <h5 class="card-header">Exam Schedules</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Room</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="schedule : ${schedules}">
+                            <td th:text="${schedule.courseOffering.id}"></td>
+                            <td th:text="${schedule.examDate}"></td>
+                            <td th:text="${schedule.startTime}"></td>
+                            <td th:text="${schedule.endTime}"></td>
+                            <td th:text="${schedule.room}"></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"
+                                            type="button">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" th:href="@{'/exam-schedules/edit/' + ${schedule.id}}">
+                                            <i class="bx bx-edit-alt me-1"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item"
+                                           th:href="@{'/exam-schedules/delete/' + ${schedule.id}}"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xoá lịch thi này không?');">
+                                            <i class="bx bx-trash me-1"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById("formCreateExamSchedule").addEventListener("submit", function (e) {
+                  e.preventDefault();
+                  const formData = {
+                    courseOfferingId: document.getElementById("courseId").value,
+                    examDate: document.getElementById("examDate").value,
+                    startTime: document.getElementById("startTime").value,
+                    endTime: document.getElementById("endTime").value,
+                    room: document.getElementById("room").value,
+                  };
+                  fetch("/sms/exam-schedules/create-exam", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                  })
+                    .then(response => response.json())
+                    .then(data => {
+                      const form = document.getElementById("formCreateExamSchedule");
+                      document.getElementById("responseMessage").style.color = "green";
+                      document.getElementById("responseMessage").textContent = "Class created successfully!";
+                      form.reset();
+                    })
+                    .catch(error => {
+                      document.getElementById("responseMessage").style.color = "red";
+                      document.getElementById("responseMessage").textContent = "Error creating class.";
+                    });
+                });
+            </script>
+
+        </div>
+    </div>
+</div>
+</html>

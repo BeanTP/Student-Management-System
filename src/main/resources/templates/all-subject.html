@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html th:replace="~{layout :: layout(~{::content}, 'All Subject')}"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="content-wrapper">
+        <!-- Content -->
+
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <!-- Basic Bootstrap Table -->
+            <div class="card">
+                <div class="d-flex justify-content-between align-items-center px-4 py-2">
+                    <!-- Bên trái: Tiêu đề -->
+                    <h5 class="m-0">Management Subject</h5>
+
+                    <!-- Bên phải: Form lọc -->
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">
+                            <select class="form-select" id="filterType">
+                                <option disabled selected value="">Chọn kiểu lọc</option>
+                                <option value="subjectId">Tìm theo Subject ID</option>
+                            </select>
+                        </div>
+
+                        <div class="me-2" id="filterFormContainer">
+                            <!-- Trường lọc sẽ render động tại đây -->
+                        </div>
+
+                        <button class="btn btn-primary" onclick="handleSearch()">Tìm</button>
+                        <button class="btn btn-outline-secondary" onclick="handleReset()">Reset</button>
+                    </div>
+                </div>
+
+
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Subject Id</th>
+                            <th>Subject Name</th>
+                            <th>Credit</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0" th:fragment="tableContent" th:if="${subjects != null}">
+                        <tr th:each="subject : ${subjects}">
+                            <td th:text="${subject.subjectId}">U001</td>
+                            <td th:text="${subject.subjectName}">Nguyễn Văn A</td>
+                            <td th:text="${subject.credit}">01/01/2000</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"
+                                            type="button">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" th:href="@{'/subjects/update/' + ${subject.subjectId}}">
+                                            <i class="bx bx-edit-alt me-1"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item"
+                                           th:href="@{'/subjects/delete/' + ${subject.subjectId}}"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xoá thông tin môn học này không?');">
+                                            <i class="bx bx-trash me-1"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--/ Basic Bootstrap Table -->
+            <div class="content-backdrop fade"></div>
+        </div>
+        <div th:if="${message}" class="alert alert-dismissible fade show"
+             th:classappend="'alert-' + ${alertType}" role="alert">
+            <span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+              const alertBox = document.querySelector(".alert");
+              if (alertBox) {
+                setTimeout(() => {
+                  alertBox.classList.remove("show");
+                  alertBox.classList.add("fade");
+                }, 3000); // 3000ms = 3s
+              }
+            });
+        </script>
+    </div>
+
+    <script>
+        document.getElementById("filterType").addEventListener("change", function () {
+          const selected = this.value;
+          const container = document.getElementById("filterFormContainer");
+          let html = "";
+
+          if (selected === "subjectId") {
+            html = `<input type="text" id="filterInput" class="form-control" placeholder="Nhập Subject ID">`;
+          }
+
+          container.innerHTML = html;
+        });
+
+    function handleSearch() {
+      const type = document.getElementById("filterType").value;
+      const keyword = document.getElementById("filterInput")?.value;
+
+      if (!type || !keyword) return;
+
+      fetch(`/sms/subjects/filter?type=${type}&value=${keyword}`)
+        .then(response => response.text())
+        .then(html => {
+          document.querySelector("tbody.table-border-bottom-0").outerHTML = html;
+        })
+        .catch(err => {
+          console.error("Lỗi khi fetch dữ liệu:", err);
+        });
+    }
+
+    function handleReset() {
+      document.getElementById("filterType").value = "";
+      document.getElementById("filterFormContainer").innerHTML = "";
+
+      fetch("/sms/subjects/all-subject")
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const newDoc = parser.parseFromString(html, "text/html");
+          const newTable = newDoc.querySelector(".table-responsive").innerHTML;
+
+          document.querySelector(".table-responsive").innerHTML = newTable;
+        })
+        .catch(err => {
+          console.error("Lỗi khi reset dữ liệu:", err);
+        });
+    }
+
+
+    </script>
+
+</div>
+
+
+</html>
