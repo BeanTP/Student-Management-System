@@ -3,6 +3,7 @@ package com.tdtu.student_management_system.classes.service;
 import com.tdtu.student_management_system.classes.dto.ClassDTO;
 import com.tdtu.student_management_system.classes.entity.Class;
 import com.tdtu.student_management_system.classes.repository.ClassRepository;
+import com.tdtu.student_management_system.user.dto.UserDTO;
 import com.tdtu.student_management_system.user.entity.User;
 import com.tdtu.student_management_system.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,29 @@ public class ClassService {
         classEntity.setStudents(students);
 
         return classRepository.save(classEntity);
+    }
+
+    public Class updateClass(long classId, ClassDTO dto){
+        Optional<Class> existingClass = classRepository.findById(classId);
+        if(existingClass.isPresent()){
+            Class cls = existingClass.get();
+
+            if(dto.getClassName() != null && !dto.getClassName().equals(cls.getClassName()))
+                cls.setClassName(dto.getClassName());
+
+            if(dto.getTeacherId() != null && !dto.getTeacherId().isEmpty() && !dto.getTeacherId().equals(cls.getTeacherId()))
+                cls.setTeacherId(dto.getTeacherId());
+
+            if(dto.getAcademicYear() != null && !dto.getAcademicYear().isEmpty() && !dto.getAcademicYear().equals(cls.getAcademicYear()))
+                cls.setAcademicYear(dto.getAcademicYear());
+
+            if(dto.getStudents() != null && !dto.getStudents().isEmpty() && !dto.getStudents().equals(cls.getStudents()))
+                cls.setStudents(dto.getStudents());
+
+            return classRepository.save(cls);
+        } else {
+            throw new RuntimeException("User not found with userId: " + classId);
+        }
     }
 
     public Class addStudentsToClass(long classId, ClassDTO classDTO){

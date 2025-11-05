@@ -20,7 +20,7 @@ public class ExamScheduleController {
     private ExamScheduleService examScheduleService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping("/create-exam")
     public ResponseEntity<ExamSchedule> create(@RequestBody ExamScheduleDTO dto) {
         try {
             ExamSchedule examSchedule = examScheduleService.createExamSchedule(dto);

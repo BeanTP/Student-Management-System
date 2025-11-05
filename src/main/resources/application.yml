@@ -1,20 +1,23 @@
 #spring.application.name=student_management_system
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /sms
 
 spring:
+  application:
+    name: "student_management_system"
   datasource:
-    url: "jdbc:mysql://localhost:3306/SMSProject"
-    username: root
-    password: 190804
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3308/SMSProject}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
   security:
     user:

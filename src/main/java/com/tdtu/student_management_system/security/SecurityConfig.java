@@ -34,7 +34,7 @@ public class SecurityConfig{
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/login", "/home", "/assets/**", "/forgot-password").permitAll()
-                        .requestMatchers("/users/change-password", "/users/me").authenticated()
+                        .requestMatchers("/users/change-password", "/users/me", "/users/settings-account").authenticated()
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form

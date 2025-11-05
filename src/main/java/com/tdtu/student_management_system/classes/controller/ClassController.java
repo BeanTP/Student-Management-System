@@ -21,7 +21,7 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
-    @PostMapping
+    @PostMapping("/create-class")
     public ResponseEntity<?> createdClass(@RequestBody ClassDTO classDTO){
         try{
             Class classEntity = classService.createClass(classDTO);

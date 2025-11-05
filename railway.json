@@ -1,0 +1,9 @@
+{
+  "build": {
+    "builder": "paketo-buildpacks/builder:base",
+    "buildpacks": ["gcr.io/paketo-buildpacks/java"]
+  },
+  "deploy": {
+    "startCommand": "mvn clean package -DskipTests && java -jar target/student_management_system-0.0.1-SNAPSHOT.jar"
+  }
+}
