@@ -8,9 +8,9 @@ spring:
   application:
     name: "student_management_system"
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3308/SMSProject}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
